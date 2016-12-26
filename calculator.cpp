@@ -15,8 +15,7 @@ int Calculator::Compute() {
 
   auto ans = computation.top(); computation.pop();
 
-  if(ans == CalculatorOps::ZERO) return 0;
-  if(ans == CalculatorOps::ONE) return 1;
+  return toBinary(ans);
 }
 
 void Calculator::binaryOp(CalculatorOps binop) {
@@ -26,7 +25,7 @@ void Calculator::binaryOp(CalculatorOps binop) {
 
   while((v1 == CalculatorOps::NIL || v2 == CalculatorOps::NIL) && !computation.empty()) {
     auto op = computation.top(); computation.pop();
-    if(op != CalculatorOps::ZERO && op != CalculatorOps::ONE) {
+    if(!isBinary(op)) {
       aux.push(op);
     } else {
       if(v1 == CalculatorOps::NIL) v1 = op;
@@ -34,8 +33,8 @@ void Calculator::binaryOp(CalculatorOps binop) {
     }
   }
 
-  auto vv1 = (v1 == CalculatorOps::ZERO ? 0 : 1);
-  auto vv2 = (v2 == CalculatorOps::ZERO ? 0 : 1);
+  auto vv1 = toBinary(v1);
+  auto vv2 = toBinary(v2); 
 
   int ans = 0;
 
@@ -47,7 +46,7 @@ void Calculator::binaryOp(CalculatorOps binop) {
       std::cout << "DEFAULT\n";
   }
 
-  computation.push(ans == 0 ? CalculatorOps::ZERO : CalculatorOps::ONE);
+  computation.push(toCalculatorOps(ans));
 
   while(!aux.empty()) {
     auto op = aux.top(); aux.pop();
