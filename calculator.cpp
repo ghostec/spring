@@ -6,8 +6,9 @@ Calculator::Calculator() {}
 int Calculator::Compute() {
   while(computation.size() > 1) {
     auto op = computation.top(); computation.pop();
-    if(isUnaryOp(op)) unaryOp(op);
-    else binaryOp(op);
+    if(!isUnaryOp(op) && !isBinaryOp(op)) return -1;
+    auto err = (isUnaryOp(op) ? unaryOp(op) : binaryOp(op));
+    if(err != Error::NIL) return -1;
   }
 
   auto ans = computation.top(); computation.pop();
@@ -19,7 +20,7 @@ void Calculator::SetComputation(std::stack<CalculatorOps> _computation) {
   computation = _computation;
 }
 
-void Calculator::unaryOp(CalculatorOps unop) {
+Error Calculator::unaryOp(CalculatorOps unop) {
   std::stack<CalculatorOps> aux;
   auto v = CalculatorOps::NIL;
 
@@ -28,6 +29,8 @@ void Calculator::unaryOp(CalculatorOps unop) {
     if(!isBinary(op)) aux.push(op);
     else v = op;
   }
+
+  if(v == CalculatorOps::NIL) return Error::INVALID_COMPUTATION;
 
   auto vv = toBinary(v);
 
@@ -41,9 +44,11 @@ void Calculator::unaryOp(CalculatorOps unop) {
     auto op = aux.top(); aux.pop();
     computation.push(op);
   }
+
+  return Error::NIL;
 }
 
-void Calculator::binaryOp(CalculatorOps binop) {
+Error Calculator::binaryOp(CalculatorOps binop) {
   std::stack<CalculatorOps> aux;
   auto v1 = CalculatorOps::NIL;
   auto v2 = CalculatorOps::NIL;
@@ -57,6 +62,8 @@ void Calculator::binaryOp(CalculatorOps binop) {
       else v2 = op;
     }
   }
+
+  if(v1 == CalculatorOps::NIL || v2 == CalculatorOps::NIL) return Error::INVALID_COMPUTATION;
 
   auto vv1 = toBinary(v1);
   auto vv2 = toBinary(v2); 
@@ -73,4 +80,10 @@ void Calculator::binaryOp(CalculatorOps binop) {
     auto op = aux.top(); aux.pop();
     computation.push(op);
   }
+
+  return Error::NIL;
+}
+
+bool Calculator::isComputationValid() {
+  return true;
 }

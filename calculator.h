@@ -2,6 +2,7 @@
 #define CALCULATORH
 
 #include <stack>
+#include "error.h"
 
 enum class CalculatorOps {
   ZERO, ONE, NIL,
@@ -36,12 +37,13 @@ inline bool isUnaryOp(CalculatorOps op) {
 class Calculator {
 private:
   std::stack<CalculatorOps> computation;
-  void binaryOp(CalculatorOps op);
-  void unaryOp(CalculatorOps op);
+  Error binaryOp(CalculatorOps op);
+  Error unaryOp(CalculatorOps op);
 public:
   Calculator();
   int Compute();
   void SetComputation(std::stack<CalculatorOps> _computation);
+  bool isComputationValid();
 };
 
 #endif
