@@ -4,7 +4,9 @@
 #include <stack>
 
 enum class CalculatorOps {
-  ZERO, ONE, AND, OR, XOR, NIL
+  ZERO, ONE, NIL,
+  AND, OR, XOR,
+  NOT
 };
 
 inline int toBinary(CalculatorOps v) {
@@ -19,13 +21,27 @@ inline bool isBinary(CalculatorOps v) {
   return (v == CalculatorOps::ZERO || v == CalculatorOps::ONE);
 }
 
+inline bool isBinaryOp(CalculatorOps op) {
+  if(op == CalculatorOps::AND ||
+      op == CalculatorOps::OR ||
+      op == CalculatorOps::XOR) return true;
+  return false;
+}
+
+inline bool isUnaryOp(CalculatorOps op) {
+  if(op == CalculatorOps::NOT) return true;
+  return false;
+}
+
 class Calculator {
 private:
   std::stack<CalculatorOps> computation;
   void binaryOp(CalculatorOps op);
+  void unaryOp(CalculatorOps op);
 public:
   Calculator();
   int Compute();
+  void SetComputation(std::stack<CalculatorOps> _computation);
 };
 
 #endif
