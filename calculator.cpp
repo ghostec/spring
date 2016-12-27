@@ -84,6 +84,6 @@ Error Calculator::binaryOp(CalculatorOps binop) {
   return Error::NIL;
 }
 
-bool Calculator::isComputationValid() {
-  return true;
+bool Calculator::IsComputationValid() {
+  return (Compute() == -1 ? false : true);
 }

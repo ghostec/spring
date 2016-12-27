@@ -43,7 +43,7 @@ public:
   Calculator();
   int Compute();
   void SetComputation(std::stack<CalculatorOps> _computation);
-  bool isComputationValid();
+  bool IsComputationValid();
 };
 
 #endif

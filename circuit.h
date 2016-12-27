@@ -2,6 +2,7 @@
 #define CIRCUITH
 
 #include <stack>
+#include <vector>
 #include "calculator.h"
 #include "block.h"
 
@@ -28,10 +29,15 @@ inline bool isCalculatorOps(CircuitOps op) {
 class Circuit {
 private:
   std::stack<CircuitOps> computation;
+  CalculatorOps circuitOpsToCalculatorOps(CircuitOps op, Block acc00, Block acc01, Block cur);
+  std::stack<CalculatorOps> convertComputationToCalculatorOps(Block acc00, Block acc01, Block cur);
 public:
+  std::vector<CircuitOps> Computation;
+
   Circuit();
   int Compute(Block acc00, Block acc01, Block cur);
-  void SetComputation(std::stack<CircuitOps> _computation);
+  void SetComputation(std::vector<CircuitOps> _Computation);
+  bool IsComputationValid(Block acc00, Block acc01, Block cur);
 };
 
 #endif
