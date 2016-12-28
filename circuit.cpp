@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <string>
 #include "circuit.h"
 
 Circuit::Circuit() {}
@@ -52,4 +53,28 @@ CalculatorOps Circuit::circuitOpsToCalculatorOps(CircuitOps op, Block acc00, Blo
 
 bool Circuit::IsComputationValid(Block acc00, Block acc01, Block cur) {
   return (Compute(acc00, acc01, cur) == -1 ? false : true);
+}
+
+void Circuit::Print() {
+  for(const auto op : Computation) {
+    std::string str;
+    if(op == CircuitOps::AND) str = "AND";
+    else if(op == CircuitOps::OR) str = "OR";
+    else if(op == CircuitOps::XOR) str = "XOR";
+    else if(op == CircuitOps::NOT) str = "NOT";
+    else if(op == CircuitOps::ACC00_0) str = "ACC00_0";
+    else if(op == CircuitOps::ACC00_1) str = "ACC00_1";
+    else if(op == CircuitOps::ACC00_2) str = "ACC00_2";
+    else if(op == CircuitOps::ACC00_3) str = "ACC00_3";
+    else if(op == CircuitOps::ACC01_0) str = "ACC01_0";
+    else if(op == CircuitOps::ACC01_1) str = "ACC01_1";
+    else if(op == CircuitOps::ACC01_2) str = "ACC01_2";
+    else if(op == CircuitOps::ACC01_3) str = "ACC01_3";
+    else if(op == CircuitOps::CUR_0) str = "CUR_0";
+    else if(op == CircuitOps::CUR_1) str = "CUR_1";
+    else if(op == CircuitOps::CUR_2) str = "CUR_2";
+    else if(op == CircuitOps::CUR_3) str = "CUR_3";
+    std::cout << str << " ";
+  }
+  std::cout << std::endl;
 }

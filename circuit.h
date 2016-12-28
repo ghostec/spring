@@ -26,6 +26,13 @@ inline bool isCalculatorOps(CircuitOps op) {
   return false;
 }
 
+inline bool isCircuitBinaryOp(CircuitOps op) {
+  if(op == CircuitOps::AND ||
+      op == CircuitOps::OR ||
+      op == CircuitOps::XOR) return true;
+  return false;
+}
+
 class Circuit {
 private:
   std::stack<CircuitOps> computation;
@@ -38,6 +45,7 @@ public:
   int Compute(Block acc00, Block acc01, Block cur);
   void SetComputation(std::vector<CircuitOps> _Computation);
   bool IsComputationValid(Block acc00, Block acc01, Block cur);
+  void Print();
 };
 
 #endif
