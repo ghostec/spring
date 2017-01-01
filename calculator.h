@@ -2,48 +2,27 @@
 #define CALCULATORH
 
 #include <stack>
-#include "error.h"
 
-enum class CalculatorOps {
-  ZERO, ONE, NIL,
-  AND, OR, XOR,
-  NOT
+namespace Calculator {
+
+enum class Ops {
+  NIL, ZERO, ONE,
+  OR, AND, XOR, NOT
 };
 
-inline int toBinary(CalculatorOps v) {
-  return (v == CalculatorOps::ZERO ? 0 : 1);
-}
+typedef std::stack<Ops> Expression;
 
-inline CalculatorOps toCalculatorOps(int v) {
-  return (v == 0 ? CalculatorOps::ZERO : CalculatorOps::ONE);
-}
+bool IsBinaryOp(Ops op);
+int Calculate(Expression expr);
+Expression CalculateOp(const Ops op, Expression expr);
+Expression CalculateUnaryOp(const Ops op, Expression expr);
+Expression CalculateUnaryOp(const Ops op, const Ops v, Expression expr);
+Expression CalculateBinaryOp(const Ops op, Expression expr);
+Expression CalculateBinaryOp(const Ops op, const Ops v1, Expression expr);
+Expression CalculateBinaryOp(const Ops op, const Ops v1, const Ops v2, Expression expr);
+int OpsToInt(const Ops op);
+Ops IntToOps(const int v);
 
-inline bool isBinary(CalculatorOps v) {
-  return (v == CalculatorOps::ZERO || v == CalculatorOps::ONE);
 }
-
-inline bool isBinaryOp(CalculatorOps op) {
-  if(op == CalculatorOps::AND ||
-      op == CalculatorOps::OR ||
-      op == CalculatorOps::XOR) return true;
-  return false;
-}
-
-inline bool isUnaryOp(CalculatorOps op) {
-  if(op == CalculatorOps::NOT) return true;
-  return false;
-}
-
-class Calculator {
-private:
-  std::stack<CalculatorOps> computation;
-  Error binaryOp(CalculatorOps op);
-  Error unaryOp(CalculatorOps op);
-public:
-  Calculator();
-  int Compute();
-  void SetComputation(std::stack<CalculatorOps> _computation);
-  bool IsComputationValid();
-};
 
 #endif

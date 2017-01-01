@@ -1,89 +1,66 @@
-#include <iostream>
 #include "calculator.h"
 
-Calculator::Calculator() {}
+namespace Calculator {
 
-int Calculator::Compute() {
-  while(computation.size() > 1) {
-    auto op = computation.top(); computation.pop();
-    if(!isUnaryOp(op) && !isBinaryOp(op)) return -1;
-    auto err = (isUnaryOp(op) ? unaryOp(op) : binaryOp(op));
-    if(err != Error::NIL) return -1;
-  }
-
-  auto ans = computation.top(); computation.pop();
-
-  return toBinary(ans);
+bool IsBinaryOp(Ops op) {
+  if(op == Ops::OR || op == Ops::AND || op == Ops::XOR) return true;
+  return false;
 }
 
-void Calculator::SetComputation(std::stack<CalculatorOps> _computation) {
-  computation = _computation;
+int Calculate(Expression expr) {
+  // expr: prefix expression, eg: &|100
+  auto op = expr.top(); expr.pop();
+  return OpsToInt(CalculateOp(op, expr).top());
 }
 
-Error Calculator::unaryOp(CalculatorOps unop) {
-  std::stack<CalculatorOps> aux;
-  auto v = CalculatorOps::NIL;
-
-  while(v == CalculatorOps::NIL && !computation.empty()) {
-    auto op = computation.top(); computation.pop();
-    if(!isBinary(op)) aux.push(op);
-    else v = op;
-  }
-
-  if(v == CalculatorOps::NIL) return Error::INVALID_COMPUTATION;
-
-  auto vv = toBinary(v);
-
-  int ans = 0;
-
-  if(unop == CalculatorOps::NOT) ans = !vv;
-
-  computation.push(toCalculatorOps(ans));
-
-  while(!aux.empty()) {
-    auto op = aux.top(); aux.pop();
-    computation.push(op);
-  }
-
-  return Error::NIL;
+Expression CalculateOp(const Ops op, Expression expr) {
+  if(IsBinaryOp(op)) return CalculateBinaryOp(op, expr);
+  return CalculateUnaryOp(op, expr);
 }
 
-Error Calculator::binaryOp(CalculatorOps binop) {
-  std::stack<CalculatorOps> aux;
-  auto v1 = CalculatorOps::NIL;
-  auto v2 = CalculatorOps::NIL;
-
-  while((v1 == CalculatorOps::NIL || v2 == CalculatorOps::NIL) && !computation.empty()) {
-    auto op = computation.top(); computation.pop();
-    if(!isBinary(op)) {
-      aux.push(op);
-    } else {
-      if(v1 == CalculatorOps::NIL) v1 = op;
-      else v2 = op;
-    }
-  }
-
-  if(v1 == CalculatorOps::NIL || v2 == CalculatorOps::NIL) return Error::INVALID_COMPUTATION;
-
-  auto vv1 = toBinary(v1);
-  auto vv2 = toBinary(v2); 
-
-  int ans = 0;
-
-  if(binop == CalculatorOps::AND) ans = vv1 & vv2;
-  else if(binop == CalculatorOps::OR) ans = vv1 | vv2;
-  else if(binop == CalculatorOps::XOR) ans = vv1 ^ vv2;
-
-  computation.push(toCalculatorOps(ans));
-
-  while(!aux.empty()) {
-    auto op = aux.top(); aux.pop();
-    computation.push(op);
-  }
-
-  return Error::NIL;
+Expression CalculateUnaryOp(const Ops op, Expression expr) {
+  auto v = expr.top(); expr.pop();
+  if(v == Ops::ZERO || v == Ops::ONE) return CalculateUnaryOp(op, v, expr);
+  return CalculateUnaryOp(op, CalculateOp(v, expr));
 }
 
-bool Calculator::IsComputationValid() {
-  return (Compute() == -1 ? false : true);
+Expression CalculateUnaryOp(const Ops op, const Ops v, Expression expr) {
+  int r;
+  int iv = OpsToInt(v);
+  if(op == Ops::NOT) r = !iv;
+  expr.push(IntToOps(r));
+  return expr;
+}
+
+Expression CalculateBinaryOp(const Ops op, Expression expr) {
+  auto v = expr.top(); expr.pop();
+  if(v == Ops::ZERO || v == Ops::ONE) return CalculateBinaryOp(op, v, expr);
+  return CalculateBinaryOp(op, CalculateOp(v, expr));
+}
+
+Expression CalculateBinaryOp(const Ops op, const Ops v1, Expression expr) {
+  auto v = expr.top(); expr.pop();
+  if(v == Ops::ZERO || v == Ops::ONE) return CalculateBinaryOp(op, v1, v, expr);
+  return CalculateBinaryOp(op, v1, CalculateOp(v, expr));
+}
+
+Expression CalculateBinaryOp(const Ops op, const Ops v1, const Ops v2, Expression expr) {
+  int r;
+  int iv1 = OpsToInt(v1);
+  int iv2 = OpsToInt(v2);
+  if(op == Ops::OR) r = iv1 | iv2;
+  else if(op == Ops::AND) r = iv1 & iv2;
+  else if(op == Ops::XOR) r = iv1 ^ iv2;
+  expr.push(IntToOps(r));
+  return expr;
+}
+
+int OpsToInt(const Ops op) {
+  return (op == Ops::ZERO ? 0 : 1);
+}
+
+Ops IntToOps(const int v) {
+  return (v == 0 ? Ops::ZERO : Ops::ONE);
+}
+
 }
