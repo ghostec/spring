@@ -27,4 +27,24 @@ int Calculate(Circuit circuit, Blocks blocks) {
   return Calculator::Calculate(expr);
 }
 
+bool IsValid(Circuit circuit) {
+  int sum = 0;
+  bool pending_unary = false;
+
+  for(const auto c : circuit) {
+    if(sum < 0) return false;
+
+    Calculator::Ops op;
+    if((op = stringToCalculatorOps(c.Label)) != Calculator::Ops::NIL) {
+      if(Calculator::IsBinaryOp(op)) sum += 2;
+      else pending_unary = true;
+    } else {
+      sum -= 1;
+      pending_unary = false;
+    }
+  }
+
+  return ((sum == 1 && pending_unary == false) ? true : false);
+}
+
 }

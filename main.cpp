@@ -22,6 +22,7 @@ int main() {
   blocks.CreateBlock("ACC01", {1,1,1,1});
   blocks.CreateBlock("CUR", {1,1,1,1});
 
+  std::cout << Circuit::IsValid(circuit) << std::endl;
   std::cout << Circuit::Calculate(circuit, blocks) << std::endl;
 
   return 0;

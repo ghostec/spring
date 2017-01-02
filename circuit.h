@@ -18,6 +18,7 @@ struct Component {
 typedef std::vector<Component> Circuit; 
 
 int Calculate(Circuit circuit, Blocks blocks);
+bool IsValid(Circuit circuit);
 
 }
 
