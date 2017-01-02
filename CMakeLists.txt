@@ -1,4 +1,4 @@
 cmake_minimum_required(VERSION 3.6)
 project(spring)
-add_executable(spring main.cpp calculator.cpp block.cpp)
+add_executable(spring main.cpp calculator.cpp block.cpp circuit.cpp)
 set_property(TARGET spring PROPERTY CXX_STANDARD 14)
