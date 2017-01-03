@@ -1,5 +1,6 @@
 #include "circuit.h"
 #include "reverse.h"
+#include "random.h"
 
 namespace Circuit {
 
@@ -27,6 +28,39 @@ int Calculate(Circuit circuit, Blocks blocks) {
   return Calculator::Calculate(expr);
 }
 
+Circuit Generate(Blocks blocks) {
+  Circuit circuit;
+  return generateOperation(blocks, circuit);
+}
+
+Circuit generateOperation(Blocks blocks, Circuit circuit) {
+  Component op = randomOperation();
+  circuit.push_back(op);
+
+  if(rand() % 100 > 80) circuit = generateOperation(blocks, circuit);
+  else circuit.push_back(randomOperand(blocks));
+
+  if(op.Label == "NOT") return circuit;
+
+  if(rand() % 100 > 80) circuit = generateOperation(blocks, circuit);
+  else circuit.push_back(randomOperand(blocks));
+  
+  return circuit;
+}
+
+Component randomOperation() {
+  Circuit operations{
+    {"AND"}, {"OR"}, {"XOR"}, {"NOT"}
+  };
+
+  return *select_randomly(std::begin(operations), std::end(operations));
+}
+
+Component randomOperand(Blocks blocks) {
+  int index = rand() % blocks.BlockSize();
+  return {blocks.GetRandomBlockName(), index};
+}
+
 bool IsValid(Circuit circuit) {
   int sum = 0;
   bool pending_unary = false;
@@ -45,6 +79,13 @@ bool IsValid(Circuit circuit) {
   }
 
   return ((sum == 1 && pending_unary == false) ? true : false);
+}
+
+void Print(Circuit circuit) {
+  for(const auto c : circuit) {
+    std::cout << c.Label << " ";
+  }
+  std::cout << std::endl;
 }
 
 }

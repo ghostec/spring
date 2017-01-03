@@ -1,9 +1,13 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "calculator.h"
 #include "circuit.h"
 #include "block.h"
 
 int main() {
+  srand(time(NULL));
+
   Calculator::Expression expr;
   expr.push(Calculator::Ops::ONE);
   expr.push(Calculator::Ops::ZERO);
@@ -24,6 +28,9 @@ int main() {
 
   std::cout << Circuit::IsValid(circuit) << std::endl;
   std::cout << Circuit::Calculate(circuit, blocks) << std::endl;
+
+  circuit = Circuit::Generate(blocks);
+  Circuit::Print(circuit);
 
   return 0;
 }

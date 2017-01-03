@@ -15,6 +15,7 @@ public:
   Blocks(const size_t _block_size);
   void CreateBlock(const std::string name, const Block block);
   Block GetBlock(const std::string name);
+  std::string GetRandomBlockName();
   size_t BlockSize() const;
 };
 
