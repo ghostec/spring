@@ -4,6 +4,7 @@
 #include "calculator.h"
 #include "circuit.h"
 #include "block.h"
+#include "individual.h"
 
 int main() {
   srand(time(NULL));
@@ -29,8 +30,11 @@ int main() {
   std::cout << Circuit::IsValid(circuit) << std::endl;
   std::cout << Circuit::Calculate(circuit, blocks) << std::endl;
 
-  circuit = Circuit::Generate(blocks);
-  Circuit::Print(circuit);
+  auto c1 = Circuit::Generate(blocks);
+  auto c2 = Circuit::Generate(blocks);
+  Circuit::Print(c1);
+  Circuit::Print(c2);
+  Circuit::Print(Individual::Mate(c1, c2));
 
   return 0;
 }
