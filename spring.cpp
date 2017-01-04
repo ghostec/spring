@@ -20,6 +20,18 @@ File::File Recreate(const Individual::Individual individual, Block::Blocks block
   return result;
 }
 
+File::File Delta(const File::File original, const File::File recreated) {
+  File::File delta(original.size());
+  for(auto i = 0; i < original.size(); i++) delta[i] = (original[i] != recreated[i] ? 1 : 0);
+  return delta;
+}
+
+size_t CountOnes(const File::File file) {
+  size_t count = 0;
+  for(const auto e : file) if(e == 1) count++;
+  return count;
+}
+
 Block::Block calculateBlock(const Block::Blocks blocks, const std::vector<Circuit::Circuit> circuits) {
   auto block_size = blocks.BlockSize();
   Block::Block result(block_size);

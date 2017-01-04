@@ -14,7 +14,7 @@ File Read(std::string path) {
   filestr.close();
 
   std::vector<int> v; v.reserve(s.size());
-  for(const auto c : s) v.push_back(c);
+  for(const auto c : s) v.push_back(c == '0' ? 0 : 1);
 
   return v;
 }

@@ -39,7 +39,9 @@ int main() {
 
   auto result = Spring::Recreate(i1, blocks, {1,1,1,1}, 1024);
 
-  for(const auto e : result) std::cout << e;
+  auto delta = Spring::Delta(v, result);
+
+  for(const auto e : delta) std::cout << e;
   std::cout << std::endl;
 
   return 0;
