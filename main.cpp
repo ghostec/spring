@@ -5,6 +5,7 @@
 #include "circuit.h"
 #include "block.h"
 #include "individual.h"
+#include "file.h"
 
 int main() {
   srand(time(NULL));
@@ -35,6 +36,8 @@ int main() {
   Circuit::Print(c1);
   Circuit::Print(c2);
   Circuit::Print(Individual::Mate(c1, c2));
+
+  auto v = File::Read("file");
 
   return 0;
 }

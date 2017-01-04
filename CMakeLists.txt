@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
 project(spring)
-add_executable(spring main.cpp calculator.cpp block.cpp circuit.cpp individual.cpp)
+add_executable(spring main.cpp calculator.cpp block.cpp circuit.cpp individual.cpp file.cpp)
+target_link_libraries(spring z)
 set_property(TARGET spring PROPERTY CXX_STANDARD 14)
