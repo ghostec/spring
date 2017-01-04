@@ -21,4 +21,10 @@ size_t Blocks::BlockSize() const {
   return block_size;
 }
 
+Block Generate(size_t size) {
+  Block block(size);
+  for(auto i = 0; i < size; i++) block[i] = rand() % 2;
+  return block;
+}
+
 }

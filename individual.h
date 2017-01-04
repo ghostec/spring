@@ -16,9 +16,9 @@ struct Individual {
   }
 };
 
-Circuit::Circuit mateCircuits(Circuit::Circuit c1, Circuit::Circuit c2);
-Individual Mate(Individual i1, Individual i2);
-Individual Generate(Block::Blocks blocks);
+Circuit::Circuit mateCircuits(const Circuit::Circuit c1, const Circuit::Circuit c2);
+Individual Mate(const Individual i1, const Individual i2, const Block::Blocks blocks, size_t max_tries = 10);
+Individual Generate(const Block::Blocks blocks);
 
 }
 

@@ -2,7 +2,7 @@
 
 namespace Individual {
 
-Circuit::Circuit mateCircuits(Circuit::Circuit c1, Circuit::Circuit c2) {
+Circuit::Circuit mateCircuits(const Circuit::Circuit c1, const Circuit::Circuit c2) {
   // slice both, then insert at a random position
   int end = rand() % c1.size();
   int start = rand() % (end + 1);
@@ -20,17 +20,19 @@ Circuit::Circuit mateCircuits(Circuit::Circuit c1, Circuit::Circuit c2) {
   return child;
 }
 
-Individual Mate(Individual i1, Individual i2) {
+Individual Mate(const Individual i1, const Individual i2, const Block::Blocks blocks, size_t max_tries) {
   Individual child = i1;
+  size_t tries;
   for(auto i = 0; i < i1.BlockSize; i++) {
-    child.acc00[i] = mateCircuits(i1.acc00[i], i2.acc00[i]);
-    child.acc01[i] = mateCircuits(i1.acc01[i], i2.acc01[i]);
-    child.next[i] = mateCircuits(i1.next[i], i2.next[i]);
+    if(tries > max_tries) return Generate(blocks); 
+    while(tries < max_tries && Circuit::IsValid(child.acc00[i] = mateCircuits(i1.acc00[i], i2.acc00[i])));
+    while(tries < max_tries && Circuit::IsValid(child.acc01[i] = mateCircuits(i1.acc01[i], i2.acc01[i])));
+    while(tries < max_tries && Circuit::IsValid(child.next[i] = mateCircuits(i1.next[i], i2.next[i])));
   }
   return child;
 }
 
-Individual Generate(Block::Blocks blocks) {
+Individual Generate(const Block::Blocks blocks) {
   auto block_size = blocks.BlockSize();
   Individual individual(block_size);
   for(auto i = 0; i < block_size; i++) {

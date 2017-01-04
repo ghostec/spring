@@ -21,6 +21,8 @@ public:
   size_t BlockSize() const;
 };
 
+Block Generate(size_t size);
+
 }
 
 #endif
