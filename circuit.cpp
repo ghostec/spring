@@ -12,7 +12,7 @@ Calculator::Ops stringToCalculatorOps(std::string label) {
   else return Calculator::Ops::NIL;
 }
 
-int Calculate(Circuit circuit, Blocks blocks) {
+int Calculate(Circuit circuit, Block::Blocks blocks) {
   Calculator::Expression expr;
 
   for(const auto c : reverse(circuit)) {
@@ -28,12 +28,12 @@ int Calculate(Circuit circuit, Blocks blocks) {
   return Calculator::Calculate(expr);
 }
 
-Circuit Generate(Blocks blocks) {
+Circuit Generate(Block::Blocks blocks) {
   Circuit circuit;
   return generateOperation(blocks, circuit);
 }
 
-Circuit generateOperation(Blocks blocks, Circuit circuit) {
+Circuit generateOperation(Block::Blocks blocks, Circuit circuit) {
   Component op = randomOperation();
   circuit.push_back(op);
 
@@ -56,7 +56,7 @@ Component randomOperation() {
   return *select_randomly(std::begin(operations), std::end(operations));
 }
 
-Component randomOperand(Blocks blocks) {
+Component randomOperand(Block::Blocks blocks) {
   int index = rand() % blocks.BlockSize();
   return {blocks.GetRandomBlockName(), index};
 }

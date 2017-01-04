@@ -17,14 +17,14 @@ struct Component {
 
 typedef std::vector<Component> Circuit; 
 
-int Calculate(Circuit circuit, Blocks blocks);
-Circuit Generate(Blocks blocks);
+int Calculate(Circuit circuit, Block::Blocks blocks);
+Circuit Generate(Block::Blocks blocks);
 bool IsValid(Circuit circuit);
 void Print(Circuit circuit);
 
 Component randomOperation();
-Component randomOperand(Blocks blocks);
-Circuit generateOperation(Blocks blocks, Circuit circuit);
+Component randomOperand(Block::Blocks blocks);
+Circuit generateOperation(Block::Blocks blocks, Circuit circuit);
 
 }
 

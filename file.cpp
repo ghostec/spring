@@ -3,7 +3,7 @@
 
 namespace File {
 
-std::vector<int> Read(std::string path) {
+File Read(std::string path) {
   std::ifstream filestr;
   filestr.open(path);
 

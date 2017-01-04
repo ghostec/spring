@@ -8,7 +8,9 @@
 
 namespace File {
 
-std::vector<int> Read(std::string path);
+typedef std::vector<int> File;
+
+File Read(std::string path);
 
 }
 

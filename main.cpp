@@ -6,6 +6,7 @@
 #include "block.h"
 #include "individual.h"
 #include "file.h"
+#include "spring.h"
 
 int main() {
   srand(time(NULL));
@@ -23,21 +24,23 @@ int main() {
     {"AND"}, {"OR"}, {"ACC01", 0}, {"ACC00", 1}, {"CUR", 2}
   };
 
-  Blocks blocks(4);
-  blocks.CreateBlock("ACC00", {1,0,1,1});
-  blocks.CreateBlock("ACC01", {1,1,1,1});
-  blocks.CreateBlock("CUR", {1,1,1,1});
+  Block::Blocks blocks(4);
+  blocks.SetBlock("ACC00", {1,0,1,1});
+  blocks.SetBlock("ACC01", {1,1,1,1});
+  blocks.SetBlock("CUR", {1,1,1,1});
 
   std::cout << Circuit::IsValid(circuit) << std::endl;
   std::cout << Circuit::Calculate(circuit, blocks) << std::endl;
 
-  auto c1 = Circuit::Generate(blocks);
-  auto c2 = Circuit::Generate(blocks);
-  Circuit::Print(c1);
-  Circuit::Print(c2);
-  Circuit::Print(Individual::Mate(c1, c2));
+  auto i1 = Individual::Generate(blocks);
+  auto i2 = Individual::Generate(blocks);
 
   auto v = File::Read("file");
+
+  auto result = Spring::Recreate(i1, blocks, {1,1,1,1}, 1024);
+
+  for(const auto e : result) std::cout << e;
+  std::cout << std::endl;
 
   return 0;
 }

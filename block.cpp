@@ -1,9 +1,11 @@
 #include "block.h"
 #include "random.h"
 
+namespace Block {
+
 Blocks::Blocks(const size_t _block_size) : block_size(_block_size) {}
 
-void Blocks::CreateBlock(const std::string name, const Block block) {
+void Blocks::SetBlock(const std::string name, const Block block) {
   blocks[name] = block;
 }
 
@@ -17,4 +19,6 @@ std::string Blocks::GetRandomBlockName() {
 
 size_t Blocks::BlockSize() const {
   return block_size;
+}
+
 }
