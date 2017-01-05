@@ -1,3 +1,4 @@
+#include <iostream>
 #include "individual.h"
 
 namespace Individual {
@@ -41,6 +42,16 @@ Individual Generate(const Block::Blocks blocks) {
     individual.next[i] = Circuit::Generate(blocks);
   }
   return individual;
+}
+
+void Print(const Individual individual) {
+  std::cout << "ABS_FITNESS: " << individual.AbsFitness << std::endl;
+  std::cout << "ACC00\n";
+  for(const auto c : individual.acc00) Circuit::Print(c);
+  std::cout << "ACC01\n";
+  for(const auto c : individual.acc01) Circuit::Print(c);
+  std::cout << "NEXT\n";
+  for(const auto c : individual.next) Circuit::Print(c);
 }
 
 }

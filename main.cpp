@@ -1,48 +1,44 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "calculator.h"
-#include "circuit.h"
 #include "block.h"
 #include "individual.h"
 #include "file.h"
 #include "spring.h"
+#include "population.h"
 
 int main() {
   srand(time(NULL));
 
-  Calculator::Expression expr;
-  expr.push(Calculator::Ops::ONE);
-  expr.push(Calculator::Ops::ZERO);
-  expr.push(Calculator::Ops::OR);
-  expr.push(Calculator::Ops::ONE);
-  expr.push(Calculator::Ops::AND);
-  expr.push(Calculator::Ops::NOT);
-  std::cout << Calculator::Calculate(expr) << std::endl;
+  size_t block_size = 128;
 
-  Circuit::Circuit circuit{
-    {"AND"}, {"OR"}, {"ACC01", 0}, {"ACC00", 1}, {"CUR", 2}
-  };
+  Block::Blocks blocks(block_size);
+  blocks.SetBlock("ACC00", Block::Generate(block_size));
+  blocks.SetBlock("ACC01", Block::Generate(block_size));
+  blocks.SetBlock("CUR", Block::Generate(block_size));
 
-  Block::Blocks blocks(4);
-  blocks.SetBlock("ACC00", {1,0,1,1});
-  blocks.SetBlock("ACC01", {1,1,1,1});
-  blocks.SetBlock("CUR", {1,1,1,1});
+  auto original_file = File::Read("file");
+  auto population = Population::Population(blocks, 20);
+  population = Population::NextGeneration(population, blocks, original_file, Block::Block(std::begin(original_file), std::begin(original_file) + block_size), original_file.size());
+  auto max_abs_fitness = Population::MaxAbsFitness(population);
+  auto rfit = Population::RelativeFitness(population, max_abs_fitness);
 
-  std::cout << Circuit::IsValid(circuit) << std::endl;
-  std::cout << Circuit::Calculate(circuit, blocks) << std::endl;
+  size_t index = 0;
+  auto fit = rfit[0];
+  for(auto i = 0; i < population.Size; i++) {
+    if(rfit[i] < fit) {
+      index = i;
+      fit = rfit[i];
+    }
+  }
 
-  auto i1 = Individual::Generate(blocks);
-  auto i2 = Individual::Generate(blocks);
+  auto recreated_file = Spring::Recreate(population.individuals[index], blocks, Block::Block(std::begin(original_file), std::begin(original_file) + block_size), original_file.size());
+  auto delta = Spring::Delta(original_file, recreated_file);
 
-  auto v = File::Read("file");
-
-  auto result = Spring::Recreate(i1, blocks, {1,1,1,1}, 1024);
-
-  auto delta = Spring::Delta(v, result);
-
-  for(const auto e : delta) std::cout << e;
+  std::cout << Spring::CountOnes(delta) << std::endl;
+  for(const auto e : delta) std::cout << e << " ";
   std::cout << std::endl;
+
 
   return 0;
 }

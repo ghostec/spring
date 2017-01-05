@@ -39,4 +39,9 @@ Block::Block calculateBlock(const Block::Blocks blocks, const std::vector<Circui
   return result;
 }
 
+size_t CalculateAbsFitness(Individual::Individual individual, const File::File original, const File::File recreated) {
+  auto delta = Spring::Delta(original, recreated);
+  return Spring::CountOnes(delta);
+}
+
 }

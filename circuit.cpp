@@ -37,12 +37,12 @@ Circuit generateOperation(Block::Blocks blocks, Circuit circuit) {
   Component op = randomOperation();
   circuit.push_back(op);
 
-  if(rand() % 100 > 80) circuit = generateOperation(blocks, circuit);
+  if(rand() % 100 > 65) circuit = generateOperation(blocks, circuit);
   else circuit.push_back(randomOperand(blocks));
 
   if(op.Label == "NOT") return circuit;
 
-  if(rand() % 100 > 80) circuit = generateOperation(blocks, circuit);
+  if(rand() % 100 > 65) circuit = generateOperation(blocks, circuit);
   else circuit.push_back(randomOperand(blocks));
   
   return circuit;
